@@ -1,6 +1,6 @@
 package main
 
-test_docker_socket_ {
+test_docker_socket {
   checkDockerSocket with input as {
     "kind": "Deployment",
     "spec": {
