@@ -8,6 +8,40 @@ For this we would like to have the following:
 name space name, controller/pod name, severity of test. 
 5. The Rego policies should have unit tests that checks their validity.
 
+## Policy Document Structure
+All policy document should have the following sections to make it easier
+to read, verify and test policies.
+
+1. Default Check rule value: This should always be set to false.
+1. Check rule: This rule checks for the condition which will result in a deny. 
+   The rule name should be in the form `check<SomeText>.
+   This rule should always return true if the condition for a deny is met.
+1. Deny rule: This rule should call the check rule and return a message if the check rule is true.
+
+Example policy document:
+```
+# default check rule value
+default checkFoo = false
+
+# check rule
+checkFoo {
+  input.foo == "bar"
+}
+
+# deny rule
+deny[msg] {
+  checkFoo
+  msg := "Foo is denied"
+}
+```
+
+Example test file:
+```
+test_foo {
+  checkFoo with input as { "foo": "bar" }
+}
+```
+
 References:
 - Learn Rego here: https://www.openpolicyagent.org/docs/latest/policy-language/
 - Rego playground: https://play.openpolicyagent.org/
