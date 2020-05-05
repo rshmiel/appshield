@@ -4,10 +4,10 @@ import data.lib.kubernetes
 
 name = input.metadata.name
 
-# Default to false if volume is undefined
-# Required for OPA tests
 default checkDockerSocket = false
  
+# checkDockerSocket is true if volumes.hostPath.path is set to /var/run/docker.sock
+# and is false if volumes.hostPath is set to some other path or not set.
 checkDockerSocket {
   kubernetes.is_deployment
   input.spec.volumes[_].hostPath.path == "/var/run/docker.sock"

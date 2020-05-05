@@ -1,5 +1,6 @@
 package main
 
+# PASS if volumes.hostPath.path is set to /var/run/docker.sock
 test_docker_socket {
   checkDockerSocket with input as {
     "kind": "Deployment",
@@ -16,6 +17,7 @@ test_docker_socket {
   }
 }
 
+# FAIL if volumes.hostPath.path is set to some other path
 test_docker_socket_some_other_volume {
   checkDockerSocket with input as {
     "kind": "Deployment",
@@ -24,7 +26,7 @@ test_docker_socket_some_other_volume {
         {
           "name": "dockersock",
           "hostPath": {
-            "path": "/some/run/docker.sock"
+            "path": "/some/other/path"
           }
         }
       ]
@@ -32,6 +34,7 @@ test_docker_socket_some_other_volume {
   }
 }
 
+# FAIL if volumes.hostPath.path is not set
 test_docker_socket_no_volumes {
   checkDockerSocket with input as {
     "kind": "Deployment",
